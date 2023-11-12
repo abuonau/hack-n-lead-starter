@@ -36,7 +36,7 @@ def PlotGenderDistributionPerMonth():
     grouped_df['Month'] = pd.Categorical(grouped_df['Month'], categories=months, ordered=True)
     grouped_df.sort_values(by='Month', inplace=True)
     grouped_df.head()
-    fig = px.line(grouped_df, x="Month", y="counts", title='Gender distributions/Month', color='gender')
+    fig = px.line(grouped_df, x="Month", y="counts", title='', color='gender')
     return fig
 
 
@@ -60,20 +60,20 @@ def CreateCompaniesPlot():
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # Bar chart
-    fig.add_trace(go.Bar(x=df['org']['Month'], y=df['org']['N_activities'], marker_color='blue', name='N activities',
+    fig.add_trace(go.Bar(x=df['org']['Month'], y=df['org']['N_activities'], marker_color='#1f77b4', name='N activities',
                          marker=dict(color='red')), secondary_y=False)
 
     # Line chart
-    fig.add_trace(go.Scatter(x=df['org']['Month'], y=df['org']['N_Esupporters'], marker_color='blue',
+    fig.add_trace(go.Scatter(x=df['org']['Month'], y=df['org']['N_Esupporters'], marker_color='skyblue',
                              name='N supporting companies', mode='lines'), secondary_y=False)
 
     # Update layout
-    fig.update_layout(title_text='Companies and Activities Over Months', xaxis_title='Month',
+    fig.update_layout(title_text='', xaxis_title='Month',
                       yaxis_title='Number of Companies', yaxis2_title='Number of Activities')
 
     # Update axes
-    fig.update_yaxes(title_text='Number of Companies', secondary_y=False)
-    fig.update_yaxes(title_text='Number of Activities', secondary_y=True)
+    fig.update_yaxes(title_text='Number', secondary_y=False)
+    fig.update_yaxes(title_text='Number', secondary_y=True)
 
     return fig
 

@@ -26,14 +26,14 @@ def side_bar():
 
     impact_value = st.sidebar.text_input('Key values for the impact [leave empty if unsure]')
 
-    st.title(f"{NGO_name} Impact Measure \n {impact_value}")
 
     logo_file = st.sidebar.file_uploader("Your company logo")
     if logo_file:
         image = Image.open(logo_file)
         st.image(image)
+    st.title(f"{NGO_name} Impact Measure \n {impact_value}")
 
-    st.title(f"{NGO_name} Impact Measure")
+    # st.title(f"{NGO_name} Impact Measure")
 
     st.sidebar.text_input("Target area (Food, Education, Poverty)")
 
@@ -134,6 +134,12 @@ def main():
         plot_visualizations(ngo_df, participant_df, NGO_name)
 
 
+        # fig = Dashboard.CreateCompaniesPlot()
+        #
+        # st.plotly_chart(fig)
+
+
+
 def plot_visualizations(ngo_df, participant_df, NGO_name):
     # Data aggregation for career changes
     start_field_count = participant_df.groupby(["start_field"])["start_field"].count()
@@ -143,6 +149,7 @@ def plot_visualizations(ngo_df, participant_df, NGO_name):
 
     row1_col1, row1_col2 = st.columns(2)
     row2_col1, row2_col2 = st.columns(2)
+    row3_col1 = st.columns(1)
 
     # 1. Line Graph for Staff and Volunteers Over Time
     row1_col1.subheader(f"Staff and Volunteers Over Time {NGO_name}")
@@ -151,10 +158,13 @@ def plot_visualizations(ngo_df, participant_df, NGO_name):
     row1_col1.plotly_chart(fig1)
 
     # 2. Bar Chart for Number of Activities Each Month
-    row1_col2.subheader("Number of Activities Each Month")
-    fig2 = px.bar(ngo_df, x="Month", y="N_activities")
-    fig2.update_layout(legend_title=None)
-    row1_col2.plotly_chart(fig2)
+    row1_col2.subheader("Number of Activities and Supporting Stakeholders")
+    fig = Dashboard.CreateCompaniesPlot()
+    row1_col2.plotly_chart(fig)
+    #
+    # fig2 = px.bar(ngo_df, x="Month", y="N_activities")
+    # fig2.update_layout(legend_title=None)
+    # row1_col2.plotly_chart(fig2)
 
     # 3. Box Plot for Staff and Volunteer Variability
     # st.subheader("Staff and Volunteer Variability")
@@ -162,10 +172,14 @@ def plot_visualizations(ngo_df, participant_df, NGO_name):
     # st.plotly_chart(fig3)
 
     # 4. Stacked Bar Chart for Staff and Volunteers
-    row2_col1.subheader("Staff and Volunteers Each Month")
-    fig4 = px.bar(ngo_df, x="Month", y=["N_staff", "N_volunteers"], barmode="stack")
-    fig4.update_layout(legend_title=None)
-    row2_col1.plotly_chart(fig4)
+
+    row2_col1.subheader('Ratio in the profession change')
+        # Display the result
+    table = Dashboard.CreateTableChangeRatio()
+    row2_col1.dataframe(table)
+    # fig4 = px.bar(ngo_df, x="Month", y=["N_staff", "N_volunteers"], barmode="stack")
+    # fig4.update_layout(legend_title=None)
+    # row2_col1.plotly_chart(fig4)
 
     row2_col2.subheader("Career Transitions by Industry")
     fig6 = px.bar(
@@ -182,7 +196,9 @@ def plot_visualizations(ngo_df, participant_df, NGO_name):
     # st.subheader("Staff vs. Volunteers")
     # fig5 = px.scatter(ngo_df, x="N_staff", y="N_volunteers")
     # st.plotly_chart(fig5)
-
+    row3_col1[0].header("Gender distributions/Month")
+    fig7 = Dashboard.PlotGenderDistributionPerMonth()
+    row3_col1[0].plotly_chart(fig7)
 
 # Streamlit code for pie chart
 def create_pie_chart(data_frame, column, title):
