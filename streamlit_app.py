@@ -177,9 +177,7 @@ def plot_visualizations(ngo_df, participant_df, NGO_name):
         # Display the result
     table = Dashboard.CreateTableChangeRatio()
     row2_col1.dataframe(table)
-    # fig4 = px.bar(ngo_df, x="Month", y=["N_staff", "N_volunteers"], barmode="stack")
-    # fig4.update_layout(legend_title=None)
-    # row2_col1.plotly_chart(fig4)
+
 
     row2_col2.subheader("Career Transitions by Industry")
     fig6 = px.bar(
